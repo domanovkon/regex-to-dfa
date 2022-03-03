@@ -46,7 +46,7 @@ class DeterministicFiniteAutomaton:
             for key in num:
                 print(key + ':', num[key])
 
-    def finale_automaton_modeling(self, s, state, trans_table):
+    def finite_automaton_modeling(self, s, state, trans_table):
         symbol_list = list(trans_table[state])
         for ch in s:
             if not symbol_list.__contains__(ch):

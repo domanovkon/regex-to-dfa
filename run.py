@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
     check_string = "aabb"
     print("\nInput string: " + check_string)
-    result = automaton.finale_automaton_modeling(check_string, automaton.start_state, automaton.state_transition_table)
+    result = automaton.finite_automaton_modeling(check_string, automaton.start_state, automaton.state_transition_table)
     if not result:
         print("False")
     else:
