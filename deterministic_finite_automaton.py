@@ -54,11 +54,11 @@ class DeterministicFiniteAutomaton:
             if not symbol_list.__contains__(ch):
                 return False
 
-            if (trans_table.__contains__(state)):
+            if trans_table.__contains__(state):
                 state = frozenset(trans_table[state][ch])
 
                 try:
-                    if (self.finite_states.__contains__(state) and len(s)-1==i):
+                    if self.finite_states.__contains__(state) and len(s) - 1 == i:
                         return True
                     else:
                         symbol_list = list(trans_table[state])
@@ -67,79 +67,62 @@ class DeterministicFiniteAutomaton:
 
             i += 1
 
-
         return state in finite_states
 
-    def getPos(self, d):
+    def get_position(self, d):
+        if len(d) == 0:
+            # self.states.index(list(self.states)[len(self.states) - 1])
+            return len(self.states) - 1
         return self.states.index(d)
 
     def minimization(self):
         n = len(self.states)
-        symb = list(self.all_symbols)
-
         min_matrix = np.zeros((n, n))
-
-        subsets = [list(map(lambda s: self.getPos(set(s)), filter(lambda s: s not in self.finite_states,self.states))), list(map(lambda s: self.getPos(set(s)), self.finite_states))]
+        subsets = [list(map(lambda s: self.get_position(set(s)), filter(lambda s: s not in self.finite_states, self.states))),
+                   list(map(lambda s: self.get_position(set(s)), self.finite_states))]
         for a in subsets[0]:
             for b in subsets[1]:
                 min_matrix[a, b] = 1
                 min_matrix[b, a] = 1
+        is_finished = False
 
-        isFinished = False
-
-        while not isFinished:
-            copyMin_matrix = np.copy(min_matrix)
+        while not is_finished:
+            copy_min_matrix = np.copy(min_matrix)
             k = 0
-
             for i in range(n):
                 for j in range(n):
                     if min_matrix[i, j] < 1:
-
                         for e1 in list(list(self.state_transition_table.values())[i]):
                             for e2 in list(list(self.state_transition_table.values())[j]):
-                                if e1==e2 and min_matrix[
-                                        self.getPos(list(self.state_transition_table.values())[i].get(e1)),
-                                        self.getPos(list(self.state_transition_table.values())[j].get(e2))
-                                    ] > 0:
-                                    copyMin_matrix[i,j], copyMin_matrix[j,i] = 2, 2
-                                    k+=1
+                                if e1 == e2 and min_matrix[
+                                    self.get_position(list(self.state_transition_table.values())[i].get(e1)),
+                                    self.get_position(list(self.state_transition_table.values())[j].get(e2))
+                                ] > 0:
+                                    copy_min_matrix[i, j], copy_min_matrix[j, i] = 2, 2
+                                    k += 1
 
             newSubset = []
             for i in range(n):
                 f = False
                 newSubSubset = []
                 for j in range(n):
-                    if(copyMin_matrix[i,j]==0):
+                    if (copy_min_matrix[i, j] == 0):
                         newSubSubset += [j]
-                    if(copyMin_matrix[i,j]==2):
+                    if (copy_min_matrix[i, j] == 2):
                         f = True
                 newSubset += [newSubSubset]
                 f = False
-
             newSubset = set(tuple(row) for row in newSubset)
-
-
-            min_matrix = copyMin_matrix
-            if k==0:
-                isFinished = True
-
-        pass
-        #for a in
+            min_matrix = copy_min_matrix
+            if k == 0:
+                is_finished = True
 
         edges = []
         for e in newSubset:
             d = self.state_transition_table.get(self.states[e[0]])
             for k, v in d.items():
-                edges.append({'srcNode': e[0], 'dstNode': self.getPos(v), 'data': k})
-        print(edges)
-
-
-    #     list_states = list()
-    #     for i in range(len(self.states)):
-    #         list_states.append((self.states[i]))
-    #
-    #     dop_state = frozenset()
-    #     tr_tbl = self.state_transition_table
-    #     tr_tbl[len(self.states)] = dop_state()
-    #     print(self.state_transition_table[list_states[0]]['a'])
-
+                if len(v) != 0:
+                    edges.append({'Present state': e[0], 'Next state': self.get_position(v), 'Input': k})
+        print("\nMinimized transition table")
+        for edge in edges:
+            print(edge)
