@@ -28,11 +28,11 @@ class DeterministicFiniteAutomaton:
                 S = set()
                 for pos in [p for p in R if PosToSymbolMap[p] == a]:
                     S = S.union(FollowPosMap[pos])
-                    if bool(S) and frozenset(S) not in unmrkd_states:
-                        unmrkd_states[frozenset(S)] = False
-                    if R not in state_transition_table:
-                        state_transition_table[R] = dict()
-                    state_transition_table[R][a] = S
+                if bool(S) and frozenset(S) not in unmrkd_states:
+                    unmrkd_states[frozenset(S)] = False
+                if R not in state_transition_table:
+                    state_transition_table[R] = dict()
+                state_transition_table[R][a] = S
 
         self.state_transition_table = state_transition_table
         self.states = list(unmrkd_states.keys())

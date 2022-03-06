@@ -9,7 +9,7 @@ if __name__ == "__main__":
     automaton = DeterministicFiniteAutomaton()
     automaton.build_automaton(marked_regexp)
 
-    check_string = "aabb"
+    check_string = "abaacabd"
     print("\nInput string: " + check_string)
     result = automaton.finite_automaton_modeling(check_string,
                                                  automaton.start_state,
