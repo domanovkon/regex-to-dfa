@@ -43,7 +43,7 @@ class DeterministicFiniteAutomaton:
 
         print("\nTransition table")
         for state, num in self.state_transition_table.items():
-            print(state)
+            print("State:", set(state))
             for key in num:
                 print(key + ':', num[key])
 
@@ -53,10 +53,8 @@ class DeterministicFiniteAutomaton:
         for ch in s:
             if not symbol_list.__contains__(ch):
                 return False
-
             if trans_table.__contains__(state):
                 state = frozenset(trans_table[state][ch])
-
                 try:
                     if self.finite_states.__contains__(state) and len(s) - 1 == i:
                         return True
@@ -64,9 +62,7 @@ class DeterministicFiniteAutomaton:
                         symbol_list = list(trans_table[state])
                 except:
                     return False
-
             i += 1
-
         return state in finite_states
 
     def get_position(self, d):

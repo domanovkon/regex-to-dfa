@@ -8,7 +8,7 @@ if __name__ == "__main__":
     print("Marked regexp is " + marked_regexp + "\n")
     automaton = DeterministicFiniteAutomaton()
     automaton.build_automaton(marked_regexp)
-
+    automaton.minimization()
     check_string = "aaabb"
     print("\nInput string: " + check_string)
     result = automaton.finite_automaton_modeling(check_string,
@@ -16,8 +16,6 @@ if __name__ == "__main__":
                                                  automaton.state_transition_table,
                                                  automaton.finite_states)
     if not result:
-        print("False")
+        print("not valid")
     else:
-        print("True")
-
-    automaton.minimization()
+        print("valid")
