@@ -102,9 +102,9 @@ class DeterministicFiniteAutomaton:
                 f = False
                 newSubSubset = []
                 for j in range(n):
-                    if (copy_min_matrix[i, j] == 0):
+                    if copy_min_matrix[i, j] == 0:
                         newSubSubset += [j]
-                    if (copy_min_matrix[i, j] == 2):
+                    if copy_min_matrix[i, j] == 2:
                         f = True
                 newSubset += [newSubSubset]
                 f = False
