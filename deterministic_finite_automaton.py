@@ -83,7 +83,7 @@ class DeterministicFiniteAutomaton:
         is_finished = False
 
         while not is_finished:
-            copy_min_matrix = np.copy(min_matrix)
+            # copy_min_matrix = np.copy(min_matrix)
             k = 0
             for i in range(n):
                 for j in range(n):
@@ -94,7 +94,7 @@ class DeterministicFiniteAutomaton:
                                     self.get_position(list(self.state_transition_table.values())[i].get(e1)),
                                     self.get_position(list(self.state_transition_table.values())[j].get(e2))
                                 ] > 0:
-                                    copy_min_matrix[i, j], copy_min_matrix[j, i] = 2, 2
+                                    min_matrix[i, j], min_matrix[j, i] = 2, 2
                                     k += 1
 
             newSubset = []
@@ -102,14 +102,14 @@ class DeterministicFiniteAutomaton:
                 f = False
                 newSubSubset = []
                 for j in range(n):
-                    if copy_min_matrix[i, j] == 0:
+                    if min_matrix[i, j] == 0:
                         newSubSubset += [j]
-                    if copy_min_matrix[i, j] == 2:
+                    if min_matrix[i, j] == 2:
                         f = True
                 newSubset += [newSubSubset]
                 f = False
             newSubset = set(tuple(row) for row in newSubset)
-            min_matrix = copy_min_matrix
+            # min_matrix = copy_min_matrix
             if k == 0:
                 is_finished = True
 
